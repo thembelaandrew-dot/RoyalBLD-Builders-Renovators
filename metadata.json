@@ -1,0 +1,6 @@
+{
+  "name": "RoyalBLD Builders & Renovators",
+  "description": "Ultra-premium residential construction, luxury renovations, and architectural extensions in Pretoria, led on-site by Albert Zenda.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
