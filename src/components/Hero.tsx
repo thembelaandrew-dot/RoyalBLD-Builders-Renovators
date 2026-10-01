@@ -15,12 +15,16 @@ export const Hero: React.FC<HeroProps> = ({ onScrollToCalculator, onOpenWhatsApp
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-16 overflow-hidden bg-stone-950">
       {/* Background Architectural Photography with Measured Scrim */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 bg-stone-950">
         <img
-          src="/src/assets/images/hero_luxury_villa_1790835574136.jpg"
+          src="/images/hero_luxury_villa.jpg"
           alt="Luxury architectural residence in Pretoria East built and renovated by RoyalBLD"
           className="w-full h-full object-cover object-center filter brightness-[0.45] contrast-[1.05]"
           referrerPolicy="no-referrer"
+          onError={(e) => {
+            // Graceful fallback to prevent empty frame
+            (e.target as HTMLElement).style.display = 'none';
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/60 to-stone-950/40" />
       </div>

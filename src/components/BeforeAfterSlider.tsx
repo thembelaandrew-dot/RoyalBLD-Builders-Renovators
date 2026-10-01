@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ArrowLeftRight, CheckCircle, Clock, DollarSign, MapPin } from 'lucide-react';
 import { BEFORE_AFTER_PROJECTS } from '../data/companyData';
 import { BeforeAfterProject } from '../types';
@@ -6,10 +6,32 @@ import { BeforeAfterProject } from '../types';
 export const BeforeAfterSlider: React.FC = () => {
   const [activeProjectIndex, setActiveProjectIndex] = useState<number>(0);
   const [sliderPosition, setSliderPosition] = useState<number>(50); // percentage 0-100
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [containerWidth, setContainerWidth] = useState<number>(800);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const activeProject: BeforeAfterProject = BEFORE_AFTER_PROJECTS[activeProjectIndex];
+
+  // Dynamic width tracking across all devices and screen resize events
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const updateSize = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.clientWidth);
+      }
+    };
+    updateSize();
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateSize();
+    });
+    resizeObserver.observe(containerRef.current);
+    window.addEventListener('resize', updateSize);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', updateSize);
+    };
+  }, [activeProjectIndex]);
 
   const handleMove = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -25,18 +47,15 @@ export const BeforeAfterSlider: React.FC = () => {
     }
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isDragging) {
+  const handlePointerDown = (e: React.PointerEvent) => {
+    handleMove(e.clientX);
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (e.buttons === 1) {
       handleMove(e.clientX);
     }
-  };
-
-  const handlePointerDown = () => {
-    setIsDragging(true);
-  };
-
-  const handlePointerUp = () => {
-    setIsDragging(false);
   };
 
   return (
@@ -51,12 +70,12 @@ export const BeforeAfterSlider: React.FC = () => {
             Drag to Reveal: Before & After RoyalBLD
           </h2>
           <p className="text-stone-300 text-base leading-relaxed [text-wrap:balance]">
-            Experience the dramatic difference between dated Pretoria suburban interiors and Albert Zenda&apos;s architectural finish. Drag the central divider to inspect every detail.
+            Experience the dramatic difference between dated Pretoria suburban interiors and Albert Zenda&apos;s architectural finish. Drag the central divider or tap presets below.
           </p>
         </div>
 
         {/* Project Selector Segmented Control (Tabs) */}
-        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-6 no-scrollbar">
           {BEFORE_AFTER_PROJECTS.map((proj, idx) => {
             const isSelected = activeProjectIndex === idx;
             return (
@@ -85,10 +104,9 @@ export const BeforeAfterSlider: React.FC = () => {
           <div className="lg:col-span-8 select-none">
             <div
               ref={containerRef}
-              className="relative aspect-video rounded-xl overflow-hidden shadow-2xl border border-stone-700 cursor-ew-resize touch-none"
-              onMouseMove={handleMouseMove}
-              onMouseDown={handlePointerDown}
-              onMouseUp={handlePointerUp}
+              className="relative aspect-video rounded-xl overflow-hidden shadow-2xl border border-stone-700 cursor-ew-resize touch-none bg-stone-950"
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
               onTouchMove={handleTouchMove}
             >
               {/* AFTER Image (Full background) */}
@@ -98,7 +116,7 @@ export const BeforeAfterSlider: React.FC = () => {
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute top-4 right-4 bg-stone-950/80 backdrop-blur-sm border border-amber-500/40 px-3 py-1.5 rounded text-xs font-semibold tracking-wide text-amber-300">
+              <div className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-stone-950/85 backdrop-blur-sm border border-amber-500/40 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-semibold tracking-wide text-amber-300 shadow">
                 AFTER: RoyalBLD Handover
               </div>
 
@@ -110,34 +128,65 @@ export const BeforeAfterSlider: React.FC = () => {
                 <img
                   src={activeProject.beforeImg}
                   alt={`${activeProject.title} Before Renovation`}
-                  className="absolute inset-0 w-full h-full object-cover max-w-none pointer-events-none"
+                  className="absolute inset-0 h-full object-cover pointer-events-none"
                   style={{
-                    width: containerRef.current ? `${containerRef.current.clientWidth}px` : '100%',
-                    height: containerRef.current ? `${containerRef.current.clientHeight}px` : '100%',
+                    width: `${containerWidth}px`,
+                    maxWidth: 'none',
                   }}
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute top-4 left-4 bg-stone-950/80 backdrop-blur-sm border border-stone-600 px-3 py-1.5 rounded text-xs font-semibold tracking-wide text-stone-300">
+                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-stone-950/85 backdrop-blur-sm border border-stone-600 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded text-[11px] sm:text-xs font-semibold tracking-wide text-stone-300 shadow">
                   BEFORE: Dated Condition
                 </div>
               </div>
 
               {/* Divider Line & Interactive Handle */}
               <div
-                className="absolute inset-y-0 w-1 bg-white shadow-2xl cursor-ew-resize flex items-center justify-center pointer-events-none"
+                className="absolute inset-y-0 w-0.5 sm:w-1 bg-white shadow-2xl cursor-ew-resize flex items-center justify-center pointer-events-none"
                 style={{ left: `${sliderPosition}%` }}
               >
-                <div className="w-9 h-9 bg-amber-400 text-stone-950 rounded-full shadow-lg border-2 border-stone-900 flex items-center justify-center transform -translate-x-1/2">
-                  <ArrowLeftRight className="w-4 h-4 text-stone-950" />
+                <div className="w-8 h-8 sm:w-9 sm:h-9 bg-amber-400 text-stone-950 rounded-full shadow-lg border-2 border-stone-900 flex items-center justify-center transform -translate-x-1/2">
+                  <ArrowLeftRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-950" />
                 </div>
               </div>
             </div>
 
-            {/* Slider Hint */}
-            <div className="flex items-center justify-between text-xs text-stone-400 mt-3 px-1">
-              <span>← Slide to inspect Before state</span>
-              <span className="font-mono-num">{Math.round(sliderPosition)}% Split</span>
-              <span>Slide to inspect RoyalBLD Finish →</span>
+            {/* Slider Hint and Quick Presets */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-stone-400 mt-3 px-1">
+              <div className="flex items-center gap-1.5">
+                <span>Quick View:</span>
+                <button
+                  type="button"
+                  onClick={() => setSliderPosition(100)}
+                  className={`px-2 py-0.5 rounded text-[11px] border cursor-pointer ${
+                    sliderPosition === 100 ? 'bg-amber-400 text-stone-900 border-amber-400' : 'border-stone-700 hover:text-white'
+                  }`}
+                >
+                  100% Before
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSliderPosition(50)}
+                  className={`px-2 py-0.5 rounded text-[11px] border cursor-pointer ${
+                    sliderPosition === 50 ? 'bg-amber-400 text-stone-900 border-amber-400' : 'border-stone-700 hover:text-white'
+                  }`}
+                >
+                  50 / 50 Split
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSliderPosition(0)}
+                  className={`px-2 py-0.5 rounded text-[11px] border cursor-pointer ${
+                    sliderPosition === 0 ? 'bg-amber-400 text-stone-900 border-amber-400' : 'border-stone-700 hover:text-white'
+                  }`}
+                >
+                  100% After
+                </button>
+              </div>
+
+              <div className="font-mono-num text-[11px] sm:text-xs">
+                {Math.round(sliderPosition)}% Before · {100 - Math.round(sliderPosition)}% RoyalBLD Handover
+              </div>
             </div>
           </div>
 

@@ -41,14 +41,17 @@ export const LeadershipSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Albert's Portrait and Credentials (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-stone-800 aspect-square max-w-md mx-auto lg:max-w-none">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-stone-800 aspect-square max-w-md mx-auto lg:max-w-none bg-stone-950">
               <img
-                src="/src/assets/images/albert_zenda_founder_1790835622164.jpg"
+                src="/images/albert_zenda_founder.jpg"
                 alt="Albert Zenda, Founder and Managing Director of RoyalBLD Builders & Renovators Pretoria"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/20 to-transparent pointer-events-none" />
               <div className="absolute bottom-5 left-5 right-5 text-left">
                 <div className="text-xl font-bold font-serif-brand text-white">Albert Zenda</div>
                 <div className="text-xs text-amber-400 font-medium">Founder & Managing Director · Master Builder</div>

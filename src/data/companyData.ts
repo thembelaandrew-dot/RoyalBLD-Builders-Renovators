@@ -164,8 +164,8 @@ export const BEFORE_AFTER_PROJECTS: BeforeAfterProject[] = [
     duration: '7 Weeks',
     description:
       'Complete reconfiguration of a closed-off 1990s Mediterranean layout into a breathtaking light-flooded architectural pavilion. Removed three load-bearing walls, installed recessed steel RSJ beams, and unified the living area with 3-meter stacking glass portals onto the landscaped terrace.',
-    beforeImg: '/src/assets/images/waterkloof_villa_before_1790835667144.jpg',
-    afterImg: '/src/assets/images/waterkloof_villa_after_1790835586717.jpg',
+    beforeImg: '/images/waterkloof_villa_before.jpg',
+    afterImg: '/images/waterkloof_villa_after.jpg',
     beforeHighlights: [
       'Heavy dark arches and compartmentalized small rooms',
       'Cracked terracotta floor tiles with uneven sub-screed',
@@ -194,8 +194,8 @@ export const BEFORE_AFTER_PROJECTS: BeforeAfterProject[] = [
     duration: '16 Days',
     description:
       'Replacement of builder-spec laminate cabinetry with an executive chef kitchen centered around a 3.8-meter quartzite waterfall island, hidden walk-in pantry/scullery, and integrated German appliances.',
-    beforeImg: '/src/assets/images/midstream_kitchen_before_1790835679491.jpg',
-    afterImg: '/src/assets/images/midstream_kitchen_after_1790835598968.jpg',
+    beforeImg: '/images/midstream_kitchen_before.jpg',
+    afterImg: '/images/midstream_kitchen_after.jpg',
     beforeHighlights: [
       'Dated cherry-wood melamine cabinets with peeling edge strips',
       'Constricted U-shape blocking natural foot traffic to the patio',
@@ -224,8 +224,8 @@ export const BEFORE_AFTER_PROJECTS: BeforeAfterProject[] = [
     duration: '12 Days',
     description:
       'Transformation of a cramped 1990s corner-tub en-suite into a five-star hotel standard wellness retreat. Features a monolithic matte stone soaking tub, dual rainfall showers with linear concealed drainage, and backlit mirror joinery.',
-    beforeImg: '/src/assets/images/silverlakes_bathroom_before_1790835691022.jpg',
-    afterImg: '/src/assets/images/silverlakes_bathroom_after_1790835610277.jpg',
+    beforeImg: '/images/silverlakes_bathroom_before.jpg',
+    afterImg: '/images/silverlakes_bathroom_after.jpg',
     beforeHighlights: [
       'Bulky beige acrylic corner jet-bath consuming 45% of room space',
       'Damp buildup behind deteriorating shower grout lines',
@@ -254,8 +254,8 @@ export const BEFORE_AFTER_PROJECTS: BeforeAfterProject[] = [
     duration: '9 Weeks',
     description:
       'Second-storey cantilevered extension adding an executive master wing with walk-in dressing room and private cantilevered balcony overlooking mature Jacaranda trees.',
-    beforeImg: '/src/assets/images/waterkloof_villa_before_1790835667144.jpg',
-    afterImg: '/src/assets/images/brooklyn_suite_after_1790835657246.jpg',
+    beforeImg: '/images/waterkloof_villa_before.jpg',
+    afterImg: '/images/brooklyn_suite_after.jpg',
     beforeHighlights: [
       'Flat unutilized roof terrace prone to water ponding and leaks',
       'Standard bedroom with limited wardrobe space',
